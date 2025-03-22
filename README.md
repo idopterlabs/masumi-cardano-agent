@@ -4,7 +4,7 @@
   <img src="docs/crypto-degen.png" alt="Degen" width="250">
 </p>
 
-An AI Agent that interacts with the Cardano blockchain and runs on the Masumi network.
+A CrewAI that interacts with the Cardano blockchain and runs on the Masumi network.
 
 ## Setup
 
@@ -17,13 +17,17 @@ python -m venv .venv && source .venv/bin/activate
 2. **Install dependencies:**
 
 ```bash
-pip install -r requirements.txt
+pip install crewai
+crewai install
 ```
 
-3. **Plug your agent 🤖 :** The `execute_job` function is where your agent will be invoked. You might also want to change the logic for calculating the price and the shape of the inputs your agent accepts.
+3. **Set your envs**
 
-4. **Run your Agent API:** 
+Copy `.env.example` into `.env` and populate with your credentials. Access to [Kupo](https://cardanosolutions.github.io/kupo/#section/Overview) is required. If you don't
+manage one, then you can use one from https://demeter.run/
+
+4. **Running the Crew**
 
 ```bash
-python main.py
+crewai run
 ```
