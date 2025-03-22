@@ -38,17 +38,19 @@ class KupoTool(BaseTool):
     def _process_kupo_data(self, data: list) -> Dict[str, int]:
         assets_total: Dict[str, int] = {"lovelace": 0}
         
-        for item in data:
-            value = item['value']
-            assets_total["lovelace"] += int(value['coins'])
-            for asset_id, amount in value['assets'].items():
+        for utxo in data:
+            lovelace = utxo['value']
+            assets_total["lovelace"] += int(lovelace['coins'])
+            for asset_id, amount in lovelace['assets'].items():
                 assets_total.setdefault(asset_id, 0)
                 assets_total[asset_id] += int(amount)
-            return assets_total
+
+        return assets_total
 
 # Example usage
 if __name__ == "__main__":
-    tool = KupoTool(base_url="")
+    import os
+    tool = KupoTool(base_url=os.getenv("KUPO_BASE_URL"))
     # result = tool._run("addr_test1wz4ydpqxpstg453xlr6v3elpg578ussvk8ezunkj62p9wjq7uw9zq")
-    result = tool._run("addr_test1wpxs63au9yehzl8uhwkyjt84zhrf9slaflhhnvjtg7ukhks8sxm0t")
+    result = tool._run("addr1qyf25say06zvrdtnmcd9w9tly3usy6ncse4cw2cdxd39w68qnc0v4cfl3sruk947cfmhd0ufgs32yxyzqdrufezp8h8qytuwkh")
     print(result)
