@@ -20,8 +20,8 @@ def run():
     Run the crew.
     """
     inputs = {
-        'cardano_address_1': 'addr_test1wpxs63au9yehzl8uhwkyjt84zhrf9slaflhhnvjtg7ukhks8sxm0t',
-        'cardano_address_2': 'addr_test1wz4ydpqxpstg453xlr6v3elpg578ussvk8ezunkj62p9wjq7uw9zq',
+        'cardano_address_1': 'addr1xxw7upjedpkr4wq839wf983jsnq3yg40l4cskzd7dy8eyndj764lvrxdayh2ux30fl0ktuh27csgmpevdu89jlxppvrsgddq74',
+        'cardano_address_2': 'addr1x89ksjnfu7ys02tedvslc9g2wk90tu5qte0dt4dge60hdudj764lvrxdayh2ux30fl0ktuh27csgmpevdu89jlxppvrsg0g63z',
     }
     
     try:

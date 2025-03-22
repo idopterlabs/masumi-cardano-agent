@@ -7,19 +7,21 @@ research_task:
 
     Make sure you find information about all assets each address holds.
     Use the Kupo API to get the exact amount of Cardano Native Assets that each address has.
+    Use the Token Registry API to find the name of the token based on the each asset ID.
+    If the token name is not found, use the asset ID.
   expected_output: >
     The exact amount of Cardano Native Assets that each address has in the following format:
 
     <cardano_address_1> holds the following assets:
     1- lovelace - <amount_of_lovelace_for_address_1>
-    2- <asset_1_key> - <amount_of_asset_1_for_address_1>
-    3- <asset_2_key> - <amount_of_asset_2_for_address_1>
+    2- <token_name_1> - <amount_of_asset_1_for_address_1>
+    3- <token_name_2> - <amount_of_asset_2_for_address_1>
     4- ...and so on
 
     <cardano_address_2> holds the following assets:
     1- lovelace - <amount_of_lovelace_for_address_2>
-    2- <asset_1_key> - <amount_of_asset_1_for_address_2>
-    3- <asset_2_key> - <amount_of_asset_2_for_address_2>
+    2- <token_name_1> - <amount_of_asset_1_for_address_2>
+    3- <token_name_2> - <amount_of_asset_2_for_address_2>
     4- ...and so on
 
     Make sure you include all assets each address holds.
@@ -29,7 +31,8 @@ reporting_task:
   description: >
     Review the information you received from each address about the assets they hold.
     Create a JSON report. This JSON report should present the assets each address holds. For each address,
-    also include a funny positive comment about the assets they hold. Make sure the comment is not too long.
+    include an assessment of how this address compares to the others in terms of the value of the assets they hold.
+    Also include a funny positive comment about the assets they hold. Make sure the comment is not too long.
     The report should be consistently formated with JSON and in a way that is easy to understand for a non-technical audience.
   expected_output: >
     A JSON report that presents the assets each address holds.

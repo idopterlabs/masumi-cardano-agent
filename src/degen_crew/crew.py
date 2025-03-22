@@ -2,6 +2,7 @@ import os
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from degen_crew.tools.kupo_tool import KupoTool
+from degen_crew.tools.token_registry_tool import TokenRegistryTool
 from dotenv import load_dotenv
 load_dotenv(override=True)
 
@@ -10,6 +11,7 @@ if not kupo_base_url:
     raise ValueError("KUPO_BASE_URL environment variable is required")
 kupo_tool = KupoTool(base_url=kupo_base_url)
 
+token_registry_tool = TokenRegistryTool()
 # If you want to run a snippet of code before or after the crew starts, 
 # you can use the @before_kickoff and @after_kickoff decorators
 # https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
@@ -30,7 +32,7 @@ class DegenCrew():
 	def researcher(self) -> Agent:
 		return Agent(
 			config=self.agents_config['researcher'],
-			tools=[kupo_tool],
+			tools=[kupo_tool, token_registry_tool],
 			verbose=True
 		)
 
