@@ -39,15 +39,11 @@ class KupoTool(BaseTool):
         assets_total: Dict[str, int] = {"lovelace": 0}
         
         for item in data:
-            if 'value' in item:
-                value = item['value']
-                if 'coins' in value:
-                    assets_total["lovelace"] += int(value['coins'])
-                if 'assets' in value:
-                    for asset_id, amount in value['assets'].items():
-                        if asset_id not in assets_total:
-                            assets_total[asset_id] = 0
-                        assets_total[asset_id] += amount
+            value = item['value']
+            assets_total["lovelace"] += int(value['coins'])
+            for asset_id, amount in value['assets'].items():
+                assets_total.setdefault(asset_id, 0)
+                assets_total[asset_id] += int(amount)
             return assets_total
 
 # Example usage
