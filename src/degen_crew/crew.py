@@ -1,7 +1,7 @@
 import os
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
-from degen_crew.tools.kupo import KupoTool
+from degen_crew.tools.kupo_tool import KupoTool
 from dotenv import load_dotenv
 load_dotenv(override=True)
 
