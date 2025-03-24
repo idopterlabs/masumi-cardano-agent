@@ -1,7 +1,7 @@
 ## Masumi Cardano Agent
 
 <p align="center">
-  <img src="docs/crypto-degen.png" alt="Degen" width="250">
+  <img src="docs/crypto-degen.png" alt="Degen" width="350">
 </p>
 
 A CrewAI that interacts with the Cardano blockchain and runs on the Masumi network.
