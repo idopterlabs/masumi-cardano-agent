@@ -6,11 +6,7 @@ from degen_crew.tools.token_registry_tool import TokenRegistryTool
 from dotenv import load_dotenv
 load_dotenv(override=True)
 
-kupo_base_url = os.getenv("KUPO_BASE_URL")
-if not kupo_base_url:
-    raise ValueError("KUPO_BASE_URL environment variable is required")
-kupo_tool = KupoTool(base_url=kupo_base_url)
-
+kupo_tool = KupoTool()
 token_registry_tool = TokenRegistryTool()
 # If you want to run a snippet of code before or after the crew starts, 
 # you can use the @before_kickoff and @after_kickoff decorators

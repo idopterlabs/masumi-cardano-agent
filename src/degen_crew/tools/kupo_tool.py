@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+import os
 import requests
 import json
 from crewai.tools import BaseTool
@@ -17,8 +17,9 @@ class KupoTool(BaseTool):
 
     def __init__(self, base_url: Optional[str] = None, **kwargs):     
         super().__init__(**kwargs)
+        base_url = base_url or os.getenv("KUPO_BASE_URL")
         if not base_url:
-            raise ValueError("base_url is required")
+            raise ValueError("Either set KUPO_BASE_URL environment variable or pass base_url to KupoTool")
         self.base_url = base_url
 
     def _run(self, cardano_address: str) -> Dict[str, int]:
