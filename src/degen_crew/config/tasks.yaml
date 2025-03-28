@@ -5,37 +5,173 @@ research_task:
     {addresses}.
 
     Note:
-    - Make sure you find information about all assets each address holds.
     - Use the KupoTool to get the exact amount of Cardano Native Assets that each address has.
-    - Use the TokenRegistryTool to find the name of the token based on the each asset ID.
-    - If the token name is not found, then use the asset ID.
   expected_output: >
-    The exact amount of Cardano Native Assets that each address has in the following format:
+    The EXACT amount of Cardano Native Assets that each address has in the following format:
 
     <cardano_address_1> holds the following assets:
-    1- lovelace - <amount_of_lovelace_for_address_1>
-    2- <token_name_1> - <amount_of_asset_1_for_address_1>
-    3- <token_name_2> - <amount_of_asset_2_for_address_1>
+    1- lovelace - <exact amount of lovelace_for_address_1>
+    2- <asset_id_1> - <exact amount of asset_1_for_address_1>
+    3- <asset_id_2> - <exact amount of asset_2_for_address_1>
     4- ...and so on
 
     <cardano_address_2> holds the following assets:
-    1- lovelace - <amount_of_lovelace_for_address_2>
-    2- <token_name_1> - <amount_of_asset_1_for_address_2>
-    3- <token_name_2> - <amount_of_asset_2_for_address_2>
+    1- lovelace - <exact amount of lovelace_for_address_2>
+    2- <asset_id_1> - <exact amount of asset_1_for_address_2>
+    3- <asset_id_2> - <exact amount of asset_2_for_address_2>
     4- ...and so on
 
     ...and so on for each address.
 
-    Make sure you include all assets each address holds.
+    Follow these rules very strictly:
+    - Include the unchanged amount EXACTLY as returned by the KupoTool.
+    - There must NOT be duplicate assets for the same address.
   agent: researcher
+
+token_filter_task:
+  description: >
+    Filter the assets for each address from {addresses} to include only the top 5 assets in terms of amount. Always include the lovelace asset.
+    From now on, you will ONLY be working with the filtered list of assets for each address and NONE of the assets outside of the filtered list should be used.
+  expected_output: >
+    A filtered list with ONLY the top 5 assets for each address including the lovelace asset. All other assets should not be included in the filtered list.
+  agent: token_filter_agent
+
+token_registry_task:
+  description: >
+    Using ONLY the filtered list of assets provided by the previous task, use the TokenRegistryTool to find the token names for all of the filtered assets.
+    Example of a token name is "Snek" and example of an asset ID is "279c909f348e533da5808898f87f9a14bb2c3dfbbacccd631d927a3f.534e454b".
+
+    Follow this Chain-of-Thought process for each address:
+
+    1. Initial Analysis:
+       a. Identify all asset IDs in the filtered list for this address
+       b. Separate lovelace from other assets (lovelace doesn't need lookup)
+       c. Group non-lovelace assets into batches of 10 (TokenRegistryTool limit)
+       d. Document the initial state of assets
+
+    2. Token Name Lookup:
+       a. For each batch of asset IDs:
+          - Use TokenRegistryTool to look up token names
+          - Record the response for each asset ID
+          - Note any patterns in the responses
+       b. Analyze the results:
+          - Which assets have token names?
+          - Which assets need to keep their asset IDs?
+          - Are there any unexpected responses?
+
+    3. Data Transformation:
+       a. For each asset:
+          - If token name exists: Replace asset ID with token name
+          - If no token name: Keep the asset ID
+          - Maintain the original amount
+       b. Verify the transformation:
+          - All amounts remain unchanged
+          - Lovelace is still first
+          - No duplicate token names
+
+    4. Quality Checks:
+       a. Verify completeness:
+          - All assets from filtered list are present
+          - No extra assets added
+          - No assets missing
+       b. Verify consistency:
+          - Amounts match original filtered list
+          - Order matches original filtered list
+          - Format is consistent
+
+    5. Documentation:
+       a. For each address, document:
+          - Initial asset IDs and amounts
+          - Token name lookup results
+          - Transformation decisions
+          - Final state
+       b. Note any:
+          - Patterns in token name availability
+          - Edge cases encountered
+          - Potential issues
+
+    Note:
+    - TokenRegistryTool has a limit of 10 asset IDs per request
+    - If token name is found, use it instead of asset ID
+    - If token name is not found, keep using the asset ID
+    - Always maintain the original amounts and order
+
+  expected_output: >
+    An updated version of the filtered list with token names where available. Include detailed reasoning for each address.
+
+    For example:
+
+    <cardano_address_1> holds the following assets:
+    Reasoning:
+    Initial State:
+    - Found 5 assets in filtered list
+    - Lovelace identified as first asset
+    - 4 non-lovelace assets to process
+
+    Token Name Lookup:
+    - Batch 1 (4 assets):
+      * 279c909f...534e454b → Found "Snek"
+      * fcf3707e...426f6b20 → No token name found
+      * 1234567...abcdef → Found "NMKR"
+      * 9876543...fedcba → No token name found
+
+    Transformation:
+    - Lovelace: No change needed
+    - Snek: Replaced asset ID with token name
+    - fcf3707e...426f6b20: Kept asset ID (no token name)
+    - NMKR: Replaced asset ID with token name
+    - 9876543...fedcba: Kept asset ID (no token name)
+
+    Quality Check:
+    - All 5 assets present
+    - Amounts verified against original
+    - Order maintained
+    - No duplicates found
+
+    1- lovelace - <amount_of_lovelace_for_address_1>
+    2- Snek - <exact amount of Snek_for_address_1>
+    3- fcf3707eff37f79c02c8c976b3047daf161ead2fce4a999a5deeeb18.426f6b20436869636b - <exact amount>
+    4- NMKR - <exact amount of NMKR_for_address_1>
+    5- 9876543210abcdef1234567890abcdef1234567890abcdef.1234567890abcdef - <exact amount>
+
+    ...and so on for each address.
+  agent: token_registry_analyst
+
 
 reporting_task:
   description: >
-    Review the information you received from each address about the assets they hold.
-    Create a JSON report. This JSON report should present the assets each address holds. For each address,
-    include a funny positive comment about the assets they hold. Make sure the comment is not too long.
-    The report should be consistently formated with JSON and in a way that is easy to understand for a non-technical audience.
+    Create a markdown using the information received from the Token Registry Task.
+    For each address, include a funny positive comment about the assets they hold.
+    Use the following template for the markdown report:
+
+    # Cardano Assets Report
+
+    Here is a summary with the top assets held by the following addresses:
+    
+    * <address_1>
+    * <address_2>
+    * ...and so on
+
+    
+    ## <address_1>
+    
+    * lovelace - <amount_of_lovelace_for_address_1>
+    * <asset_name_1> - <amount_of_asset_name_1_for_address_1>
+    * <asset_name_2> - <amount_of_asset_name_2_for_address_1>
+    * ...and so on
+
+    <funny_comment_for_address_1>
+
+    ## <address_2>
+
+    * lovelace - <amount_of_lovelace_for_address_2>
+    * <asset_name_1> - <amount_of_asset_name_1_for_address_2>
+    * <asset_name_2> - <amount_of_asset_name_2_for_address_2>
+    * ...and so on
+
+    <funny_comment_for_address_2>
+
+    ...and so on for each address.
   expected_output: >
-    A JSON report that presents the assets each address holds.
-    Formatted as JSON without '```'
+    A markdown report with information received from the Token Registry Task.
   agent: reporting_analyst

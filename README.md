@@ -4,7 +4,7 @@
   <img src="docs/crypto-degen.png" alt="Degen" width="350">
 </p>
 
-A CrewAI that interacts with the Cardano blockchain and runs on the Masumi network.
+A CrewAI that interacts with the Cardano blockchain and runs on the Masumi network via the [Masumi Cardano Agent API](https://github.com/idopterlabs/masumi-cardano-agent-api)
 
 ## Setup
 
